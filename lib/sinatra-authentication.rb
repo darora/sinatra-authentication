@@ -48,7 +48,11 @@ module Sinatra
 
       app.get '/login/?' do
         if session[:user]
-          redirect '/'
+          if session[:return_to] && session[:return_to].chomp! != ""
+            redirect session[:return_to]
+          else
+            redirect '/'
+          end
         else
           send options.template_engine, get_view_as_string("login.#{options.template_engine}"), :layout => use_layout?
         end
